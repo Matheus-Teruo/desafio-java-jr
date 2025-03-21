@@ -7,9 +7,13 @@ Você foi designado para criar uma API REST simples usando Spring Boot. A API de
 - Cadastro de Livros: Crie uma entidade chamada Livro com os seguintes campos:
 
 id (Long) - identificador único do livro
+
 titulo (String) - título do livro
+
 autor (String) - autor do livro
+
 anoPublicacao (Integer) - ano de publicação
+
 A API deve permitir o cadastro de livros.
 
 - Consulta de Livros: A API deve permitir a consulta dos livros cadastrados. Implemente uma rota que retorne a lista de todos os livros cadastrados.
