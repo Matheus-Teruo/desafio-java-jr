@@ -2,17 +2,10 @@ package com.bookshelf.bookshelf.models.books;
 
 import com.bookshelf.bookshelf.models.books.request.RequestCreateBook;
 import com.bookshelf.bookshelf.models.books.request.RequestUpdateBook;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "books")
-@NoArgsConstructor
-@Getter
 public class Book {
 
   @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +17,15 @@ public class Book {
 
   @Column(name = "ano_publicacao")
   private Integer anoPublicacao;
+
+  public Book() {}
+
+  public Book(Long id, String title, String autor, Integer anoPublicacao) {
+    this.id = id;
+    this.title = title;
+    this.autor = autor;
+    this.anoPublicacao = anoPublicacao;
+  }
 
   public Book(RequestCreateBook createBook) {
     this.title = createBook.title();
@@ -41,5 +43,21 @@ public class Book {
     if (updateBook.anoPublicacao() != null) {
       this.anoPublicacao = updateBook.anoPublicacao();
     }
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public String getAutor() {
+    return autor;
+  }
+
+  public Integer getAnoPublicacao() {
+    return anoPublicacao;
   }
 }
