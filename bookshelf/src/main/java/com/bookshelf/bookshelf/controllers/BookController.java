@@ -6,6 +6,7 @@ import com.bookshelf.bookshelf.models.books.request.RequestUpdateBook;
 import com.bookshelf.bookshelf.models.books.response.ResponseBook;
 import com.bookshelf.bookshelf.repositories.BookRepository;
 import com.bookshelf.bookshelf.service.BookService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,7 +18,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 
 @RestController
-@RequestMapping("mapping")
+@RequestMapping("books")
 public class BookController {
 
   @Autowired
@@ -41,7 +42,8 @@ public class BookController {
 
   @GetMapping("/{id}")
   public ResponseEntity<ResponseBook> getBook(@PathVariable @Valid Long id) {
-    Book book = repository.findById(id).; // TODO: lançar exceção
+    Book book = repository.findById(id)
+        .orElseThrow(EntityNotFoundException::new);
 
     var response = new ResponseBook(book);
     return ResponseEntity.ok(response);
