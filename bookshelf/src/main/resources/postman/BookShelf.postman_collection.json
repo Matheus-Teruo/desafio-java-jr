@@ -1,0 +1,180 @@
+{
+	"info": {
+		"_postman_id": "9ab08221-297a-4f11-b783-f94196496e86",
+		"name": "BookShelf",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38885305"
+	},
+	"item": [
+		{
+			"name": "Livros",
+			"item": [
+				{
+					"name": "Cria Livro",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseBody = pm.response.json();\r",
+									"\r",
+									"if (responseBody && responseBody.id) {\r",
+									"    pm.collectionVariables.set(\"book_id\", responseBody.id);\r",
+									"    console.log(\"book ID saved as:\", responseBody.id);\r",
+									"} else {\r",
+									"    console.error(\"ID not found in the response body\");\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Livro Exemplo\",\r\n    \"autor\": \"Autor Exemplo\",\r\n    \"anoPublicacao\": 2020\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostPath}}books",
+							"host": [
+								"{{hostPath}}books"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Livro por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostPath}}books/{{book_id}}",
+							"host": [
+								"{{hostPath}}books"
+							],
+							"path": [
+								"{{book_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Pagina de Livros",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostPath}}books?page&size&sort",
+							"host": [
+								"{{hostPath}}books"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": null
+								},
+								{
+									"key": "size",
+									"value": null
+								},
+								{
+									"key": "sort",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualize Livro",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"title\": \"Livro Exemplo\",\r\n    \"autor\": \"Autor Exemplo\",\r\n    \"anoPublicacao\": 2020\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostPath}}books",
+							"host": [
+								"{{hostPath}}books"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Exclui Livro",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{hostPath}}books/{{book_id}}",
+							"host": [
+								"{{hostPath}}books"
+							],
+							"path": [
+								"{{book_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "hostPath",
+			"value": "http://localhost:8080/",
+			"type": "string"
+		},
+		{
+			"key": "book_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "association_id",
+			"value": ""
+		}
+	]
+}
