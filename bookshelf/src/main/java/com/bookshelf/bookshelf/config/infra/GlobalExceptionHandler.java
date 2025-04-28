@@ -4,6 +4,8 @@ import com.bookshelf.bookshelf.config.infra.exception.InvalidQueryEntityNotFound
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -27,5 +29,27 @@ public class GlobalExceptionHandler {
     error.put("message", ex.getMessage());
 
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+  }
+
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  public ResponseEntity<Map<String, Object>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+    Map<String, String> errors = new HashMap<>();
+
+    for (FieldError error : ex.getBindingResult().getFieldErrors()) {
+      errors.put(error.getField(), error.getDefaultMessage());
+    }
+
+    Map<String, Object> response = new HashMap<>();
+    response.put("status", HttpStatus.BAD_REQUEST.value());
+    response.put("errorType",
+        MessageResolver.getInstance().getMessage(
+            "exception.global.methodNotValid.errorType")
+    );
+    response.put("invalidFields", errors);
+    response.put("error", MessageResolver.getInstance().getMessage("exception.global.methodNotValid.error"));
+    response.put("message", MessageResolver.getInstance().getMessage("exception.global.methodNotValid.message"));
+
+
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
   }
 }

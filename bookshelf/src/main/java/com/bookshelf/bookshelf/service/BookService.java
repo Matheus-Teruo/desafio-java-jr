@@ -5,6 +5,7 @@ import com.bookshelf.bookshelf.models.books.Book;
 import com.bookshelf.bookshelf.models.books.request.RequestCreateBook;
 import com.bookshelf.bookshelf.models.books.request.RequestUpdateBook;
 import com.bookshelf.bookshelf.repositories.BookRepository;
+import com.bookshelf.bookshelf.service.validation.BookValidation;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,16 +17,21 @@ public class BookService {
   @Autowired
   private BookRepository repository;
 
+  @Autowired
+  private BookValidation validation;
+
   @Transactional
   public Book createBook(RequestCreateBook createBook) {
+    validation.checkValidPublicationYear(createBook.anoPublicacao());
     Book newBook = new Book(createBook);
 
-    repository.save(newBook);
+        repository.save(newBook);
     return newBook;
   }
 
   @Transactional
   public Book updateBook(RequestUpdateBook updateBook) {
+    if (updateBook.anoPublicacao() != null) validation.checkValidPublicationYear(updateBook.anoPublicacao());
     Book book = repository.findById(updateBook.id())
         .orElseThrow(() -> new InvalidQueryEntityNotFound("livro", updateBook.id().toString()));
 
